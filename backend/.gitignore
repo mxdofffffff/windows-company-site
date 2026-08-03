@@ -1,16 +1,30 @@
-# Virtual environment
+# Virtual environments
 .venv/
-backend/.venv/
-
-# Python
-__pycache__/
-*.pyc
+venv/
 
 # Environment variables
 .env
 
-# PyCharm
-.idea/
+# Python cache
+__pycache__/
+*.py[cod]
 
-# Alembic cache
-*.db
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
