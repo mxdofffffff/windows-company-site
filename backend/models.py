@@ -16,6 +16,7 @@ class Product(Base):
     is_active:Mapped[bool] = mapped_column(server_default=text("true"),nullable=False)
     images:Mapped[list["ProductImage"]] = relationship(back_populates="product")
     requests:Mapped[list["Request"]] = relationship(back_populates="product")
+
 class ProductImage(Base):
     __tablename__ = "product_images"
     id:Mapped[int] = mapped_column(primary_key=True)
