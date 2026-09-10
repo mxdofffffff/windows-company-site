@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import Product
+from backend.models import Product
 from sqlalchemy import select,func
 from sqlalchemy.orm import selectinload
-from schemas import ProductCreate,ProductUpdate
+from backend.schemas import ProductCreate,ProductUpdate
 
 async def get_products(db:AsyncSession,limit:int=10,skip:int=0,search:str|None = None,only_active:bool=True):
     query=select(Product).options(selectinload(Product.images))
@@ -11,9 +11,9 @@ async def get_products(db:AsyncSession,limit:int=10,skip:int=0,search:str|None =
     if search:
         query=query.where(Product.name.ilike(f"%{search}%"))
     count_query = select(func.count()).select_from(query.subquery())
-    total = (await db.execute(count_query).scalar_one())
+    total = await (db.execute(count_query).scalar_one())
     query = query.order_by(Product.id.desc()).limit(limit).offset(skip)
-    items = (await db.execute(query).scalars().all())
+    items = await (db.execute(query).scalars().all())
     return items,total
 
 

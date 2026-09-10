@@ -1,7 +1,6 @@
 from fastapi import FastAPI
+from backend.router import products
+
 
 app = FastAPI(title="Window site")
-
-@app.get("/")
-def root():
-    return {"message":"API is running"}
+app.include_router(products.router)
