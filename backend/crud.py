@@ -1,3 +1,5 @@
+from itertools import product
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.models import Product
 from sqlalchemy import select,func
@@ -11,9 +13,9 @@ async def get_products(db:AsyncSession,limit:int=10,skip:int=0,search:str|None =
     if search:
         query=query.where(Product.name.ilike(f"%{search}%"))
     count_query = select(func.count()).select_from(query.subquery())
-    total = await (db.execute(count_query).scalar_one())
+    total = (await db.execute(count_query)).scalar_one()
     query = query.order_by(Product.id.desc()).limit(limit).offset(skip)
-    items = await (db.execute(query).scalars().all())
+    items = (await db.execute(query)).scalars().all()
     return items,total
 
 
@@ -27,7 +29,7 @@ async def create_product(db:AsyncSession,product:ProductCreate):
     new_product=Product(name=product.name,description=product.description,price=product.price)
     db.add(new_product)
     await db.commit()
-    await db.refresh(new_product)
+    await db.refresh(new_product,attribute_names=["images"])
     return new_product
 
 async def update_product(db:AsyncSession,product_id:int,product_data:ProductUpdate):

@@ -1,6 +1,5 @@
 from datetime import datetime
 from decimal import Decimal
-
 from backend.database import Base
 from sqlalchemy import Integer,String,func,Text,Numeric,text,ForeignKey
 from sqlalchemy.orm import Mapped,mapped_column,relationship
