@@ -1,5 +1,3 @@
-from itertools import product
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.models import Product,Request
 from sqlalchemy import select,func
@@ -54,7 +52,7 @@ async def deactivate_product(db:AsyncSession,product_id:int):
 
 
 async def create_request(db:AsyncSession,request_data:RequestCreate):
-    new_request=RequestCreate(name=request_data.name,phone=request_data.phone,comment=request_data.comment,product_id=request_data.product_id)
+    new_request=Request(name=request_data.name,phone=request_data.phone,comment=request_data.comment,product_id=request_data.product_id)
     db.add(new_request)
     await db.commit()
     await db.refresh(new_request)
