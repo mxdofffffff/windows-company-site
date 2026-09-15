@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend import crud
+from backend.crud import product as crud
 from backend.database import get_db
-from backend.schemas import (
+from backend.schemas.product import (
     ProductCreate,
     ProductListResponse,
     ProductResponse,

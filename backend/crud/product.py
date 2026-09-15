@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.models import Product,Request
 from sqlalchemy import select,func
 from sqlalchemy.orm import selectinload
-from backend.schemas import ProductCreate,ProductUpdate
+from backend.schemas.product import ProductCreate,ProductUpdate
 
 async def get_products(db:AsyncSession,limit:int=10,skip:int=0,search:str|None = None,only_active:bool=True):
     query=select(Product).options(selectinload(Product.images))

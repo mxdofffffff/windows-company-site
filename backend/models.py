@@ -30,7 +30,7 @@ class Request(Base):
     name:Mapped[str] = mapped_column(String(50),nullable=False)
     phone:Mapped[str] = mapped_column(String(15),nullable=False)
     comment:Mapped[str | None] = mapped_column(Text)
-    product_id: Mapped[int | None] = mapped_column(ForeignKey("products.id"))
+    product_id: Mapped[int | None] = mapped_column(ForeignKey("products.id"),nullable=True)
     created_at:Mapped[datetime] = mapped_column(server_default=func.now())
     status:Mapped[str] = mapped_column(String(50),default="Новый заказ",nullable=False)
     product:Mapped["Product"] = relationship(back_populates="requests")

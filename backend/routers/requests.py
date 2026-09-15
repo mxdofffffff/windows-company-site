@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.schemas import RequestResponse,RequestCreate,RequestUpdate
+from backend.schemas.request import RequestResponse,RequestCreate,RequestUpdate
 from backend.models import *
 from fastapi import Depends,APIRouter,Query,HTTPException
 from backend.database import get_db
-from backend import crud
+from backend.crud import request as crud
 
 request_router = APIRouter(prefix="/requests",tags=["requests"])
 
@@ -17,7 +17,7 @@ async def get_requests(db:AsyncSession=Depends(get_db),limit:int=Query(default=1
 
 @request_router.patch("/{request_id}", response_model=RequestResponse)
 async def update_request(request_id: int, data: RequestUpdate, db: AsyncSession = Depends(get_db)):
-    request = await crud.update_request_status(db, request_id, data.status)
+    request = await crud.update_request(db, request_id, data.status)
     if request is None:
         raise HTTPException(status_code=404, detail="Request not found")
     return request

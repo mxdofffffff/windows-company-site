@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.models import Product,Request
 from sqlalchemy import select
-from backend.schemas import ProductCreate,ProductUpdate,RequestCreate
+from backend.schemas.request import RequestCreate
 
 
 
