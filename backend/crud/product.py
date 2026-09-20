@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.models import Product,Request
+from backend.models import Product,Request,User
 from sqlalchemy import select,func
 from sqlalchemy.orm import selectinload
 from backend.schemas.product import ProductCreate,ProductUpdate

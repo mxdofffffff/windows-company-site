@@ -8,6 +8,9 @@ from backend.schemas.product import (
     ProductResponse,
     ProductUpdate,
 )
+from fastapi import Depends
+from backend.deps import get_current_admin
+from backend.models import User
 
 product_router=APIRouter(prefix="/products",tags=["products"])
 
@@ -26,12 +29,12 @@ async def get_product(product_id:int,db:AsyncSession=Depends(get_db)):
 
 
 @product_router.post("",response_model=ProductResponse)
-async def create_product(product:ProductCreate,db:AsyncSession=Depends(get_db)):
+async def create_product(product:ProductCreate,db:AsyncSession=Depends(get_db),current_admin:User=Depends(get_current_admin)):
     return await crud.create_product(db,product)
 
 
 @product_router.patch("/{product_id}",response_model=ProductResponse)
-async def update_product(product_id:int,product_data:ProductUpdate,db:AsyncSession=Depends(get_db)):
+async def update_product(product_id:int,product_data:ProductUpdate,db:AsyncSession=Depends(get_db),current_admin:User=Depends(get_current_admin)):
     product=await crud.update_product(db,product_id,product_data)
     if product is None:
         raise HTTPException(status_code=404,detail="Product not found")
@@ -39,7 +42,7 @@ async def update_product(product_id:int,product_data:ProductUpdate,db:AsyncSessi
 
 
 @product_router.delete("/{product_id}",response_model=ProductResponse)
-async def delete_product(product_id:int,db:AsyncSession=Depends(get_db)):
+async def delete_product(product_id:int,db:AsyncSession=Depends(get_db),current_admin:User=Depends(get_current_admin)):
     product = await crud.deactivate_product(db,product_id)
     if product is None:
         raise HTTPException(status_code=404,detail="Product not found")

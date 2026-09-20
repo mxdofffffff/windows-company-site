@@ -1,9 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.schemas.request import RequestResponse,RequestCreate,RequestUpdate
-from backend.models import *
+from backend.models import User
 from fastapi import Depends,APIRouter,Query,HTTPException
 from backend.database import get_db
 from backend.crud import request as crud
+from fastapi import Depends
+from backend.deps import get_current_admin
 
 request_router = APIRouter(prefix="/requests",tags=["requests"])
 
@@ -12,11 +14,11 @@ async def create_request(request:RequestCreate,db:AsyncSession=Depends(get_db)):
     return await crud.create_request(db,request)
 
 @request_router.get("",response_model=list[RequestResponse])
-async def get_requests(db:AsyncSession=Depends(get_db),limit:int=Query(default=10,ge=1,le=100),skip:int=Query(default=0,ge=0)):
+async def get_requests(db:AsyncSession=Depends(get_db),limit:int=Query(default=10,ge=1,le=100),skip:int=Query(default=0,ge=0),current_admin:User=Depends(get_current_admin)):
     return await crud.get_requests(db,limit,skip)
 
 @request_router.patch("/{request_id}", response_model=RequestResponse)
-async def update_request(request_id: int, data: RequestUpdate, db: AsyncSession = Depends(get_db)):
+async def update_request(request_id: int, data: RequestUpdate, db: AsyncSession = Depends(get_db),current_admin:User=Depends(get_current_admin)):
     request = await crud.update_request(db, request_id, data.status)
     if request is None:
         raise HTTPException(status_code=404, detail="Request not found")

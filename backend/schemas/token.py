@@ -1,9 +1,9 @@
-from pydantic import Basemodel
+from pydantic import BaseModel
 
-class Token(Basemodel):
+class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
-class TokenData(Basemodel):
+class TokenData(BaseModel):
     username: str |None=None
 
