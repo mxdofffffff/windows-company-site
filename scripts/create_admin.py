@@ -11,12 +11,12 @@ async def create_admin(username:str,password:str) -> None:
         existing_user = await get_user_by_username(db,username)
         if existing_user:
             raise HTTPException(status_code=400,detail="User already exists")
-        user=User(username=username,hashed_passwor=hash_password(password),role="admin")
+        user=User(username=username,hashed_password=hash_password(password),role="admin")
         db.add(user)
         await db.commit()
         print (f"Админ {username} создан")
 
-if __name__ == "__init__":
+if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Использование: python -m scripts.create_admin <username> <password>")
         sys.exit(1)

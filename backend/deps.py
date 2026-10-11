@@ -2,7 +2,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends,HTTPException,status
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.database import get_db
-from backend.security import decode_access_token
+from backend.security import decode_token
 from backend.crud import user as crud
 from backend.models import User
 
@@ -13,7 +13,7 @@ async def get_current_user(token:str = Depends(oauth2_scheme),db:AsyncSession = 
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate":"Bearer"})
-    payload=decode_access_token(token)
+    payload=decode_token(token)
     if not payload:
         raise credentials_exception
     username:str = payload.get("sub")
